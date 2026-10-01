@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Request
 from starlette.responses import PlainTextResponse
+from routers import auth_router , session_router
 
 # ========================= 创建 FastAPI 实例 =========================
 app = FastAPI(
@@ -21,3 +22,6 @@ def system_exception_handler(req: Request, exc: Exception):
 
 # 添加全局异常处理器
 app.add_exception_handler(Exception, system_exception_handler)
+
+app.include_router(auth_router, prefix="/auth", tags=["auth"])
+app.include_router(session_router, prefix="/session", tags=["session"])

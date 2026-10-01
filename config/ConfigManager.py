@@ -98,3 +98,4 @@ config_manager.load_config()
 if __name__ == "__main__":
     print(config_manager.get(SERVER_PORT)) # 输出：18089
     print(config_manager.get(SERVER_HOST)) # 输出：0.0.0.0
+    print(config_manager.get(JWT_EXPIRE_HOURS))
