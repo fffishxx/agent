@@ -1,5 +1,5 @@
 import asyncio
-import selectors
+import os
 import uvicorn
 from config import config_manager  # 配置管理器
 from common import *
@@ -35,7 +35,14 @@ async def start_web():
 # ========================= 项目入口 =========================
 if __name__ == "__main__":
     # ⚠️ Windows 上需要使用 SelectorEventLoop 才能兼容 psycopg 异步
-    loop = asyncio.SelectorEventLoop(selector=selectors.SelectSelector())
+    # 注意:不要直接实例化 SelectorEventLoop —— PyCharm Debug 时(ASYNCIO_DEBUGGER_ENV=True)
+    # pydevd 的 nest_asyncio 补丁会重写 Task.__init__,通过 call_soon 直接调度 Task 对象,
+    # 而 call_soon 的配套补丁只作用于经 asyncio.new_event_loop()/事件循环策略创建的循环。
+    # 直接构造的循环缺少该补丁,启动时会报 "TypeError: 'Task' object is not callable"。
+    # 改用 WindowsSelectorEventLoopPolicy(底层同样是 SelectSelector)则两种模式都正常。
+    if os.name == "nt":
+        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+    loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
 
     # 执行异步主入口

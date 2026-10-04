@@ -11,12 +11,12 @@ jwt:
   expire_hours: 720 #token有效期，单位小时
 
 db:
-  url: "mysql+pymysql://root:itcast321bca@192.168.150.101:3306/agent_center?charset=utf8mb4&connect_timeout=10"
-  pool_size: 10           # 连接池大小
-  max_overflow: 20        # 超出连接池的最大连接数
-  pool_timeout: 30        # 池中无连接时的等待时间
-  pool_recycle: 1800      # 连接回收时间（秒）
-  echo: True               # 控制台输出 SQL
+  url: "mysql+pymysql://root:itcast321bca@8.149.239.131:3306/agent_center?charset=utf8mb4&connect_timeout=10"
+  pool_size: 10       # 连接池大小，保持不变
+  max_overflow: 20    # 超出连接池的最大连接数，保持不变
+  pool_timeout: 30    # 池中无连接时的等待时间，保持不变
+  pool_recycle: 1800  # 连接回收时间（秒），保持不变
+  echo: True          # 控制台输出SQL，开发调试打开；上线改成False
 
 
 ai:
@@ -65,3 +65,20 @@ ai:
           describe: " 装饰器的作用是什么？"
         - title: "知识讲解"
           describe: "多线程为什么有GIL限制？"
+  openai:
+    model: qwen3-max
+    api-key: sk-ws-H.PDHIPLX.s6uc.MEQCIAtKXLWkS8gGnWsf3tVy74-fT84NXOb3CZvLZ8ke85qcAiBkcmepb2Mff7zMI6x9FbEi3yuwS-ujoS9kQNtz_qFcqQ
+    base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
+    temperature: 0.8
+    timeout: 30
+  agent:
+    checkpointer:
+      postgres:
+        min: 5 # 最小连接数
+        max: 10 # 最大连接数
+        url: "postgresql://postgres:itheima123@8.149.239.131:5432/postgres?sslmode=disable"
+
+redis:
+  host: 192.168.150.101
+  port: 6379
+  password: 123321
